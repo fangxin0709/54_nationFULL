@@ -1,0 +1,105 @@
+.nav-link{
+    color: rgba(255, 255, 255, 0.856) !important;
+}
+.nav-link:hover{
+    color: rgb(255, 255, 255) !important;
+    text-decoration: none !important;
+}
+.nav-item{
+    text-decoration: none !important;
+}
+.form{
+    background-color: #fff;
+    padding: 65px 20px;
+    border-radius: 30px 10px;
+    margin: 15px;
+}
+.form-control{
+    background-color: #e9e9e9 !important;
+    width: 450px !important;
+    height: 50px !important;
+    border: none !important;
+    transition: ease .5s !important;
+}
+.form-control:focus{
+    background-color: #eaeaea !important;
+}
+.form-control::placeholder{
+    color: #888;
+    font-size: 17px;
+    transition: ease .5s;
+}
+.form-control:focus::placeholder{
+    transition: ease .5s;
+    color: rgb(115, 174, 197);
+    font-size: 16px;
+}
+.submitBtn{
+    transition: ease .5s;
+    width: 450px;
+    height: 50px;
+    border-radius: 30px;
+    border:  2px solid rgb(90, 160, 207);
+    background:linear-gradient(to left,#9ed6f0,#7db7dd,#ad9de6) 0 0 / 0 100% no-repeat;
+    letter-spacing: 1px;
+    font-size: large;
+    color: #4b7ea8;
+    font-weight: bold;
+}
+.submitBtn:hover{
+    transition: ease .5s;
+    background-size: 100% 100%;
+    letter-spacing: 3px;
+    color: #fff;
+}
+body{
+    /* background-color: rgb(235, 235, 235) !important; */
+}
+.hi{
+    font-weight: bolder;
+    color: rgb(106, 139, 175);
+    margin-bottom: 20px !important;
+}
+label{
+    font-weight: bolder !important;
+    color: rgb(90, 118, 153);
+    font-size: large;
+}
+.veri{
+    font-size: xx-large;
+    font-family: 'Courier New', Courier, monospace;
+    font-style: italic;
+    box-shadow: inset 10px 10px 20px rgb(176, 189, 207);
+    padding: 0 6px;
+    /* border: 1px solid rgb(49, 89, 148); */
+    background-color: rgba(139, 156, 205, 0.267);
+    border-radius: 10px;
+}
+body{
+    /* padding: 20px; */
+    height: 1080px;
+    /* background-color: #e8f4f9a0; */
+    background-image: url(../img/螢幕擷取畫面\ 2024-07-12\ 135110.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    backdrop-filter: blur(50px);
+}
+.btn-change{
+    background-color: rgb(230, 230, 230) !important;
+}
+.btn-change.active{
+    background-color: #78a2c5 !important;
+    color: #fff;
+}
+.btn-change:not(.active):hover{
+    background-color: rgba(214, 212, 212, 0.856) !important;
+}
+.btn-change.active:hover{
+    color: #fff !important;
+}
+.dropdown-item:not(.active):hover{
+    background-color: rgb(236, 236, 236) !important;
+}
+.modal{
+    background-color: #00000042;
+}
