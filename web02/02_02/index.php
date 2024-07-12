@@ -2,6 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,44 +15,52 @@
         /* body{
             background:#fff !important ;
         } */
-        .longStr{
+        .longStr {
             width: 300px;
             height: 30px;
-            background-color: #6db5e1;
+            background-color: #7fc0e8;
             position: relative;
         }
-        tr:nth-child(even){
+
+        tr:nth-child(even) {
             flex-direction: row-reverse;
         }
-        tr{
+
+        tr {
             display: flex;
             margin: 50px;
         }
-        td{
+
+        td {
             padding: 0 !important;
             display: flex;
             justify-content: center;
             align-items: center;
             position: relative;
         }
-        .point{
+
+        .point {
             position: absolute;
             width: 60px;
             height: 60px;
             transition: ease 0.2s;
         }
-        .point:hover{
+
+        .point:hover {
             transform: scale(1.07);
             transition: ease 0.3s;
         }
-        p{
+
+        p {
             position: absolute;
             z-index: 998;
         }
-        tr:first-child{
+
+        tr:first-child {
             justify-content: flex-end;
         }
-        .show3{
+
+        .show3 {
             padding: 5px;
             position: absolute;
             bottom: 80px;
@@ -66,44 +75,68 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        .shortStrUp{
-            background-color: #6db5e1;
+
+        .shortStrUp {
+            background-color: #7fc0e8;
             width: 30px;
             height: 100px;
             position: relative;
             bottom: 35px;
         }
-        .shortStrDown{
-            background-color: #6db5e1;
+
+        .shortStrDown {
+            background-color: #7fc0e8;
             width: 30px;
             height: 100px;
             position: relative;
             top: 35px;
         }
+
         @keyframes show {
-            from{transform: translateY(15px);}
+            from {
+                transform: translateY(15px);
+            }
         }
-        table{
+
+        table {
             background-color: #ffffffba;
             border-radius: 20px;
         }
+
+        .indexVal {
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            width: 500px;
+            background-color: #fff;
+            border-radius: 20px;
+            margin: 20px 37%;
+        }
     </style>
 </head>
+
 <body>
     <?php include "nav.php";
     include "./api/db.php";
     $stations = $conn->query("select * from `station` order by `rank` ASC")->fetchAll(PDO::FETCH_ASSOC);
     $total = count($stations);
-    $total3 = ceil($total / 3);
+    $indexVal = $conn->query("select `editVal` from `indexval`")->fetchColumn();
+    $total3 = ceil($total / $indexVal);
     ?>
+    <div class="d-flex shadow indexVal">
+        <input type="range" name="editVal" id="editVal" value="<?=$indexVal?>" max="5" min="1">
+        <h3 class='text-center ml-3'>每列顯示<span class="font-weight-bold" style="color: #497e9f;font-style: italic;">
+                <?=$indexVal?>
+            </span>站</h3>
+    </div>
     <div style="display: flex;justify-content: center;align-items: center;">
-        <table class="shadow mt-5">
+        <table class="shadow">
             <?php for($i=0;$i<$total3;$i++){
                 ?>
-                <tr>
-                    <?php 
-                      for($j=0;$j<3;$j++){
-                          $index = $i * 3 + $j;
+            <tr>
+                <?php 
+                      for($j=0;$j<$indexVal;$j++){
+                          $index = $i * $indexVal + $j;
                           if($index >= $total){
                               break;
                           }
@@ -142,19 +175,28 @@
                         }
                         $station['bus_html']=ob_get_clean();
                         ?>
-                        <td>
-                            <p style="margin-bottom: 135px;font-weight: bold;"><?=$station['busName']?></p>
-                            <p style="margin-bottom: 85px;"><?=$station['time']?></p>
-                            <div class="longStr"></div>
-                            <img src="./img/POINT.png" alt="" class="point" onmousemove="show(<?=$station['id']?>)" onmouseout="by(<?=$station['id']?>)">
-                            <div class="show3" style="display: none;" id="hi_<?=$station['id']?>"><?=$station['bus_html']?></div>
-                            <p style="margin-top: 105px;font-weight: bold;"><?=$station['stationName']?></p>
-                        </td>
-                        <?php
+                <td>
+                    <p style="margin-bottom: 135px;font-weight: bold;">
+                        <?=$station['busName']?>
+                    </p>
+                    <p style="margin-bottom: 85px;">
+                        <?=$station['time']?>
+                    </p>
+                    <div class="longStr"></div>
+                    <img src="./img/POINT.png" alt="" class="point" onmousemove="show(<?=$station['id']?>)"
+                        onmouseout="by(<?=$station['id']?>)">
+                    <div class="show3" style="display: none;" id="hi_<?=$station['id']?>">
+                        <?=$station['bus_html']?>
+                    </div>
+                    <p style="margin-top: 105px;font-weight: bold;">
+                        <?=$station['stationName']?>
+                    </p>
+                </td>
+                <?php
                     }
                     ?>
-                </tr>
-                <?php
+            </tr>
+            <?php
             }  
             ?>
         </table>
@@ -165,72 +207,80 @@
 <script src="./bs/bootstrap.js"></script>
 <script src="./bs/bootstrap.bundle.min.js"></script>
 <script>
-    function show(id){
-        $("#hi_"+id).fadeIn('fast');
+    function show(id) {
+        $("#hi_" + id).fadeIn('fast');
     }
-    function by(id){
-        $("#hi_"+id).fadeOut('fast');
+    function by(id) {
+        $("#hi_" + id).fadeOut('fast');
     }
-    $(document).ready(function(){
+    $(document).ready(function () {
+        $("#editVal").on('input', function () {
+            var editVal = $(this).val();
+            $.post("./api/editVal.php", { editVal }, () => {
+                location.reload();
+            })
+        })
+    })
+    $(document).ready(function () {
         $("tr:first-child>td:first-child").css({
             'justify-content': 'flex-start',
         })
         $("tr:first-child>td:first-child>div.longStr").css({
             'width': '180px',
-            'border-radius':'20px 0 0 20px',
+            'border-radius': '20px 0 0 20px',
         })
         $("tr:first-child>td:first-child>div.show3").css({
             'right': '80px',
         })
     })
-    $(document).ready(function(){
+    $(document).ready(function () {
         var a = $("tr:last-child").index();
-        if(a % 2==0){
+        if (a % 2 == 0) {
             $("tr:last-child>td:last-child").css({
                 'justify-content': 'flex-end',
             })
             $("tr:last-child>td:last-child>div.longStr").css({
                 'width': '180px',
-                'border-radius':'0 20px 20px 0px',
+                'border-radius': '0 20px 20px 0px',
             })
             $("tr:last-child>td:last-child>div.show3").css({
-            'left': '80px',
-        })
-        }else{
+                'left': '80px',
+            })
+        } else {
             $("tr:last-child>td:last-child").css({
                 'justify-content': 'flex-start',
             })
             $("tr:last-child>td:last-child>div.longStr").css({
                 'width': '180px',
-                'border-radius':'20px 0 0 20px',
+                'border-radius': '20px 0 0 20px',
             })
             $("tr:last-child>td:last-child>div.show3").css({
-            'right': '80px',
-        })
+                'right': '80px',
+            })
         }
     })
-    $(document).ready(function(){
+    $(document).ready(function () {
         let html = "<div class='shortStrDown'></div>";
         let html1 = document.createElement('put');
         let $html = $(html);
         let $html1 = $(html1);
         $("tr:nth-child(odd):not(:last-child)>td:last-child").after($html).after($html1);
     })
-    $(document).ready(function(){
+    $(document).ready(function () {
         let html = "<div class='shortStrDown'></div>";
         let html1 = document.createElement('put');
         let $html = $(html);
         let $html1 = $(html1);
         $("tr:nth-child(even):not(:last-child)>td:last-child").after($html).after($html1);
     })
-    $(document).ready(function(){
+    $(document).ready(function () {
         let html = "<div class='shortStrUp'></div>";
         let html1 = document.createElement('put');
         let $html = $(html);
         let $html1 = $(html1);
         $("tr:nth-child(odd):not(:first-child)>td:first-child").before($html).before($html1);
     })
-    $(document).ready(function(){
+    $(document).ready(function () {
         let html = "<div class='shortStrUp'></div>";
         let html1 = document.createElement('put');
         let $html = $(html);
@@ -238,4 +288,5 @@
         $("tr:nth-child(even)>td:first-child").before($html).before($html1);
     })
 </script>
+
 </html>
